@@ -95,6 +95,11 @@ static constexpr double sigmaTh = 6.6524e-25 * cm2;
 static constexpr double barn = 1e-24 * cm2;
 static constexpr double mbarn = 1e-3 * barn;
 
+static constexpr double pulsarBSurface = std::pow(10., 12.65) * cgs::gauss;
+static constexpr double pulsarMass = 1.4 * cgs::sunMass;
+static constexpr double pulsarRadius = 10. * cgs::km;
+static constexpr double pulsarInertia = (2. / 5.) * pulsarMass * pow2(pulsarRadius);
+
 }  // namespace cgs
 
 #endif  // INCLUDE_CGS_H_

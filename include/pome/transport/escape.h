@@ -4,23 +4,20 @@
 #include <cmath>
 #include <utility>
 
-namespace pome {
+#include "pome/modelState.h"
 
-struct EscapeParams {
-  double magneticField;
-  double rPwn;
-};
+namespace pome {
 
 class Escape {
  public:
   Escape() {}
-  Escape(EscapeParams p) : m_params(p) {}
+  Escape(ModelState m) : m_state(m) {}
   virtual ~Escape() = default;
-  double get(double E, double t = 0) const;
+  double get(double E, double magneticField, double rPwn) const;
 
  protected:
  protected:
-  EscapeParams m_params;
+  ModelState m_state;
 };
 
 }  // namespace pome

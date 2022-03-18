@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <memory>
 
 #include "pome.h"
@@ -10,9 +11,8 @@ void dumpSpectrum(std::vector<double> E, std::vector<double> density, size_t i) 
   out << std::scientific;
   auto eSize = E.size();
   for (size_t j = 0; j < eSize; ++j) {
-    out << E[j] / cgs::GeV << "\t";
-    out << density[j] / (1. / cgs::GeV / cgs::sec) << "\t";
-    // out << (Q->get(energyAxis[j]) * tauEscape->get(energyAxis[j])) / (1. / cgs::GeV / cgs::sec) << "\t";
+    out << E[j] / cgs::TeV << "\t";
+    out << (E[j] * E[j] * density[j]) / cgs::TeV << "\t";
     out << "\n";
   }
 }
@@ -22,37 +22,48 @@ int main() {
     Timer timer;
     ModelState state;
 
-    std::pair<double, double> alpha = std::make_pair(state.alpha_1, state.alpha_2);
-    BrokenPowerLawParams p = {alpha, state.E_b, state.V_0, state.tau_0, state.L_B, state.n};
-    auto Q = std::unique_ptr<AbstractSource>(new BrokenPowerLaw(p));
+    auto Q = std::unique_ptr<AbstractSource>(new BrokenPowerLaw(state));
+    auto tauEscape = std::unique_ptr<Escape>(new Escape(state));
+    auto losses = std::unique_ptr<Losses>(new Losses(state));
 
-    auto tauEscape = std::unique_ptr<Escape>(new Escape({10. * cgs::muG, 1. * cgs::pc}));
-    auto losses = std::unique_ptr<Losses>(new Losses({10. * cgs::muG}));
-
-    const size_t eSize = 100;
-    const double dt = 0.01 * cgs::kyr;
+    const size_t eSize = 6 * 32;
+    const double dt = cgs::year;
 
     auto energyAxis = utils::LogAxis(1. * cgs::GeV, 1. * cgs::PeV, eSize);
     auto crDensity = std::vector<double>(eSize);
 
-    for (size_t i = 0; i < 1000; ++i) {
+    const double B = 10. * cgs::muG;
+    const double rPWN = cgs::pc;
+    const double tauAdiabatic = 1e3 * cgs::kyr;
+
+    for (size_t i = 0; i < 20001; ++i) {
+      const auto t = (double)i * dt;
       auto crDensityNew = std::vector<double>(eSize);
-      for (size_t j = 0; j < eSize; ++j) {
+      for (size_t j = 0; j < eSize - 1; ++j) {
         auto E = energyAxis[j];
-        crDensityNew[j] = dt * Q->get(E) + crDensity[j] * (1. - dt / tauEscape->get(E));
+        auto Eup = energyAxis[j + 1];
+        crDensityNew[j] = crDensity[j] + dt * Q->get(E, t);
+        crDensityNew[j] -= crDensity[j] * dt / tauEscape->get(E, B, rPWN);
+        crDensityNew[j] +=
+            dt / (Eup - E) *
+            (losses->get(Eup, B, tauAdiabatic) * crDensity[j + 1] - losses->get(E, B, tauAdiabatic) * crDensity[j]);
       }
       crDensity.assign(crDensityNew.begin(), crDensityNew.end());
 
-      if (i % 100 == 0) dumpSpectrum(energyAxis, crDensity, i);
-
-      std::cout << i << " " << crDensity.size() << "\n";
+      if (i % 1000 == 0) {
+        dumpSpectrum(energyAxis, crDensity, i / 1000);
+        std::cout << i << " " << crDensity.size() << " " << *std::max_element(crDensity.begin(), crDensity.end())
+                  << "\n";
+      }
     }
 
     utils::OutputFile out("solution.txt");
     out << std::scientific;
     for (size_t j = 0; j < eSize; ++j) {
-      out << energyAxis[j] / cgs::GeV << "\t";
-      out << (Q->get(energyAxis[j]) * tauEscape->get(energyAxis[j])) / (1. / cgs::GeV / cgs::sec) << "\t";
+      out << energyAxis[j] / cgs::TeV << "\t";
+      auto E = energyAxis[j];
+      out << Q->get(E) * tauEscape->get(E, B, rPWN) / (1. / cgs::TeV / cgs::sec) << "\t";
+      out << Q->get(E) * E / losses->get(E, B, tauAdiabatic) / (1. / cgs::TeV / cgs::sec) << "\t";
       out << "\n";
     }
 

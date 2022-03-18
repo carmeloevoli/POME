@@ -4,22 +4,20 @@
 #include <cmath>
 #include <utility>
 
-namespace pome {
+#include "pome/modelState.h"
 
-struct LossesParams {
-  double magneticField;
-};
+namespace pome {
 
 class Losses {
  public:
   Losses() {}
-  Losses(LossesParams p) : m_params(p) {}
+  Losses(ModelState m) : m_state(m) {}
   virtual ~Losses() = default;
-  double get(double E, double t = 0) const;
+  double get(double E, double magneticField, double tauAdiabatic);
 
  protected:
  protected:
-  LossesParams m_params;
+  ModelState m_state;
 };
 
 }  // namespace pome
