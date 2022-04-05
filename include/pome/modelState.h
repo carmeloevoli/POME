@@ -20,8 +20,8 @@ class ModelState {
     m_P_0 = 0.073 * cgs::sec;
     m_L_0 = 2.26e36 * cgs::erg / cgs::sec;
     m_E_SN = 1e51 * cgs::erg;
-    m_M_ejecta = 1. * cgs::sunMass;
-    m_rho_0 = cgs::protonMass / cgs::cm3;
+    m_M_ejecta = 18.6 * cgs::sunMass;
+    m_rho_0 = 0.68 * cgs::protonMass / cgs::cm3;
     dump();
   }
 
@@ -39,10 +39,6 @@ class ModelState {
   const double &E_SN = m_E_SN;
   const double &M_ejecta = m_M_ejecta;
   const double &rho_0 = m_rho_0;
-  // const double &L_B = m_L_B;
-  // const double &Omega_0 = m_Omega_0;
-  // const double &tau_0 = m_tau_0;
-  // const double &V_0 = m_V_0;
 
  private:
   double m_alpha_1;
@@ -55,10 +51,6 @@ class ModelState {
   double m_E_SN;
   double m_M_ejecta;
   double m_rho_0;
-  // double m_L_B;
-  // double m_Omega_0;
-  // double m_tau_0;
-  // double m_V_0;
 };
 
 }  // namespace pome

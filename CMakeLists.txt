@@ -18,12 +18,13 @@ include_directories(external/plog/include/)
 include_directories(external/json/include/)
 
 set(POME_SRCS 
-     src/spectrum/brokenPowerLaw.cpp
-     src/transport/escape.cpp
-     src/transport/losses.cpp
+     src/model/escape.cpp
+     src/model/losses.cpp
+     src/model/spectrum.cpp
      src/common.cpp
      src/modelState.cpp
      src/timer.cpp
+     src/tridiag.cpp
      src/utilities.cpp
 )
 
@@ -60,6 +61,9 @@ target_link_libraries (print_timescales POME_LIB ${POME_EXTRA_LIBRARIES})
 
 add_executable(evolve_electrons examples/evolvingElectrons.cpp)
 target_link_libraries (evolve_electrons POME_LIB ${POME_EXTRA_LIBRARIES})
+
+add_executable(evolve_electrons_cn examples/evolvingElectronsCN.cpp)
+target_link_libraries (evolve_electrons_cn POME_LIB ${POME_EXTRA_LIBRARIES})
 
 add_executable(evolve_pwn examples/evolvingPwn.cpp)
 target_link_libraries (evolve_pwn POME_LIB ${POME_EXTRA_LIBRARIES})

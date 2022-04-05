@@ -9,7 +9,7 @@ int main() {
     Timer timer;
     ModelState state;
 
-    auto Q = std::unique_ptr<AbstractSource>(new BrokenPowerLaw(state));
+    auto Q = std::unique_ptr<Spectrum>(new Spectrum(state));
     auto energyAxis = utils::LogAxis(1. * cgs::GeV, 1. * cgs::PeV, 600);
     utils::OutputFile out("source_spectrum.txt");
     out << std::scientific;
