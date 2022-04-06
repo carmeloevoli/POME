@@ -7,6 +7,7 @@
 #include "pome/model/losses.h"
 #include "pome/model/spectrum.h"
 #include "pome/modelState.h"
+#include "pome/pome.h"
 #include "pome/timer.h"
 #include "pome/tridiag.h"
 #include "pome/utilities.h"

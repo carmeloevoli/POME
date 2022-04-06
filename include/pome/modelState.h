@@ -22,6 +22,10 @@ class ModelState {
     m_E_SN = 1e51 * cgs::erg;
     m_M_ejecta = 18.6 * cgs::sunMass;
     m_rho_0 = 0.68 * cgs::protonMass / cgs::cm3;
+    // Energy Axis
+    m_eSize = 6 * 32;
+    m_minEnergy = cgs::GeV;
+    m_maxEnergy = cgs::PeV;
     dump();
   }
 
@@ -39,6 +43,9 @@ class ModelState {
   const double &E_SN = m_E_SN;
   const double &M_ejecta = m_M_ejecta;
   const double &rho_0 = m_rho_0;
+  const size_t &eSize = m_eSize;
+  const double &minEnergy = m_minEnergy;
+  const double &maxEnergy = m_maxEnergy;
 
  private:
   double m_alpha_1;
@@ -51,6 +58,9 @@ class ModelState {
   double m_E_SN;
   double m_M_ejecta;
   double m_rho_0;
+  size_t m_eSize;
+  double m_minEnergy;
+  double m_maxEnergy;
 };
 
 }  // namespace pome

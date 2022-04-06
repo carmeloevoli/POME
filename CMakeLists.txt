@@ -23,6 +23,7 @@ set(POME_SRCS
      src/model/spectrum.cpp
      src/common.cpp
      src/modelState.cpp
+     src/pome.cpp
      src/timer.cpp
      src/tridiag.cpp
      src/utilities.cpp
