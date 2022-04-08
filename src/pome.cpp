@@ -65,7 +65,7 @@ void Pome::evolve(double dt, double t_dump, double t_max) {
   double v_pwn = 0;  // 10. * cgs::km / cgs::sec;
 
   utils::OutputFile out("pwn_evolution.txt");
-  out << "# t - r - v - E_tot - W_B - B - t_loss - t_esc\n";
+  out << "# t [year] - r [pc] - v [km/s] - E_tot [erg] - W_B [erg] - E_cr [erg] - B [muG]\n";
 
   double t = 0;
   size_t iDump = 1;
@@ -94,9 +94,9 @@ void Pome::evolve(double dt, double t_dump, double t_max) {
     std::transform(m_energyAxis.begin(), m_energyAxis.end(), tEsc.begin(),
                    [&](double E) { return m_tauEscape->get(E, B_pwn, r_pwn); });
 
-    auto timescales = computeMinTimescale(m_energyAxis, b, tEsc);
+    // auto timescales = computeMinTimescale(m_energyAxis, b, tEsc);
 
-    if (counter % 10 == 0) {
+    if (counter % 100000 == 0) {
       out << std::scientific;
       out << t / cgs::year << " ";
       out << r_pwn / cgs::pc << " ";
@@ -105,9 +105,9 @@ void Pome::evolve(double dt, double t_dump, double t_max) {
       out << W_B / cgs::erg << " ";
       out << E_cr / cgs::erg << " ";
       out << B_pwn / cgs::muG << " ";
-      out << timescales.first / cgs::year << " ";
-      out << timescales.second / cgs::year << " ";
-      out << (r_pwn / v_pwn) / cgs::year << " ";
+      // out << timescales.first / cgs::year << " ";
+      // out << timescales.second / cgs::year << " ";
+      // out << (r_pwn / v_pwn) / cgs::year << " ";
       out << "\n";
     }
 

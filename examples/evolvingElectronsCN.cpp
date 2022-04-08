@@ -11,7 +11,7 @@ int main() {
     p.buildEnergyAxis();
     p.buildSource();
     p.buildLosses();
-    p.evolve(1e-3 * cgs::year, 0.1 * cgs::kyr, 10.1 * cgs::kyr);
+    p.evolve(1e-4 * cgs::year, 1.0 * cgs::kyr, 20.1 * cgs::kyr);
 
   } catch (const std::exception &e) {
     std::cerr << "exception caught with message: " << e.what() << "\n";
