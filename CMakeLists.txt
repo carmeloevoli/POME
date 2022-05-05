@@ -69,7 +69,8 @@ target_link_libraries (evolve_electrons_cn POME_LIB ${POME_EXTRA_LIBRARIES})
 add_executable(evolve_pwn examples/evolvingPwn.cpp)
 target_link_libraries (evolve_pwn POME_LIB ${POME_EXTRA_LIBRARIES})
 
-
+add_executable(evolve_cc examples/evolvingCoreCollapse.cpp)
+target_link_libraries (evolve_cc POME_LIB ${POME_EXTRA_LIBRARIES})
 
 # Show summary.
 message (STATUS "CMAKE_SYSTEM .......... = ${CMAKE_SYSTEM}")
