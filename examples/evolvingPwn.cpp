@@ -33,8 +33,12 @@ int main() {
     ModelState state;
     auto Q = Spectrum(state);
 
-    const double dt = 0.1 * cgs::year;
-    const double tau_0 = Q.getTau0();
+    const double dt = 1. * cgs::year;
+    const double tau_0 = 19971. * cgs::year;
+    const double M_ejecta = 18.60 * cgs::sunMass;
+    const double E_SN = 1e51 * cgs::erg;
+    const double L_0 = 2.26e36 * cgs::erg / cgs::sec;
+    const double rho_0 = cgs::protonMass * 0.68 / cgs::cm3;
 
     double r_pwn = 0;
     double v_pwn = 0;
@@ -44,7 +48,7 @@ int main() {
 
     utils::OutputFile out("pwn_evolution.txt");
     out << std::scientific;
-    for (size_t i = 1; i < 1001; ++i) {
+    for (size_t i = 1; i < 10001; ++i) {
       const auto t = (double)i * dt;
       out << t / cgs::year << "\t";
       out << r_pwn / cgs::pc << "\t";
@@ -54,9 +58,9 @@ int main() {
       out << B / cgs::muG << "\t";
       out << "\n";
 
-      r_pwn = freeExpansionPwnRadius(t, state.M_ejecta, state.rho_0, state.E_SN, state.L_0, tau_0);
+      r_pwn = freeExpansionPwnRadius(t, M_ejecta, rho_0, E_SN, L_0, tau_0);
       r_pwn = std::max(r_pwn, 1e-5 * cgs::pc);
-      v_pwn = freeExpansionPwnVelocity(t, state.M_ejecta, state.rho_0, state.E_SN, state.L_0, tau_0);
+      v_pwn = freeExpansionPwnVelocity(t, M_ejecta, rho_0, E_SN, L_0, tau_0);
       v_pwn = std::max(v_pwn, 10. * cgs::km / cgs::sec);
       E_tot = Q.getLuminosity(t) * dt + (1. - dt * v_pwn / r_pwn) * E_tot;
       W_B = state.eta_B * Q.getLuminosity(t) * dt + (1. - dt * v_pwn / r_pwn) * W_B;

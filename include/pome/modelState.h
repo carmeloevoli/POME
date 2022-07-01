@@ -21,7 +21,7 @@ class ModelState {
     m_L_0 = 2.26e36 * cgs::erg / cgs::sec;
     m_E_SN = 1e51 * cgs::erg;
     m_M_ejecta = 18.6 * cgs::sunMass;
-    m_rho_0 = 0.68 * cgs::protonMass / cgs::cm3;
+    m_rho_0 = 0.68 * 1.4 * cgs::protonMass / cgs::cm3;
     // Energy Axis
     m_eSize = 6 * 32;
     m_minEnergy = cgs::GeV;

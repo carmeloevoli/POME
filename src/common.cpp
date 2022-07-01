@@ -9,11 +9,11 @@ namespace pome {
 
 double freeExpansionPwnRadius(const double& t, const double& M_ej, const double& rho_0, const double& E_SN,
                               const double& L_pulsar, const double& tau_0) {
-  const auto R_ch = std::pow(M_ej / rho_0, 1. / 3.);
-  const auto t_ch = std::pow(E_SN, -0.5) * std::pow(M_ej, 5. / 6.) * std::pow(rho_0, -1. / 3.);
-  const auto L_ch = E_SN / t_ch;
-  const auto L_star = L_pulsar / L_ch;
-  const auto tau_star = tau_0 / t_ch;
+  const auto R_ch = std::pow(M_ej / rho_0, 1. / 3.);                                             // Eq. 5
+  const auto t_ch = std::pow(E_SN, -0.5) * std::pow(M_ej, 5. / 6.) * std::pow(rho_0, -1. / 3.);  // Eq. 6
+  const auto L_ch = E_SN / t_ch;                                                                 // Eq. 7
+  const auto tau_star = tau_0 / t_ch;                                                            // Eq. 8
+  const auto L_star = L_pulsar / L_ch;                                                           // Eq. 9
   const auto t_star = t / t_ch;
   const auto x = t_star / tau_star;
 
